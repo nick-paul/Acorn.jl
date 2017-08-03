@@ -21,14 +21,14 @@ include("cmds/bind.jl")
 include("cmds/set.jl")
 include("cmds/echo.jl")
 
-function acorn(filename::String, rel=true)
+function acorn(filename::String; rel::Bool=true)
     ed = Editor()
 
     rel && (filename = abspath(filename))
 
     editorOpen(ed, filename)
 
-    setStatusMessage(ed, "HELP: Ctrl-Q: quit | Ctrl-S: save | Ctrl-F: find")
+    setStatusMessage(ed, "HELP: Ctrl-P: command mode | Ctrl-Q: quit | Ctrl-S: save | Ctrl-F: find")
 
     Base.Terminals.raw!(ed.term, true)
 
