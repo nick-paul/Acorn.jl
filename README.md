@@ -8,15 +8,15 @@
 
 A pure julia text editor
 
+![Basic Demo](http://npaul.co/files/Acorn_basic_demo.gif)
+
 # Features
 
-## Use in REPL or from command line
+![Commands](http://npaul.co/files/Acorn_commands_demo.gif)
 
-
-
-## Commands
-
-## Customizable key bindings to commands
+  - Use in REPL or from command line
+  - Commands like `find`, `help`, `save` + easy to create your own.
+  - Customizable key bindings and settings
 
 
 # Installing
@@ -60,5 +60,45 @@ Press `Ctrl-P` to enter command mode. Type 'help COMMAND' for more information o
   - `find [STR]`: start interactive find. if STR is provided, start interactive search with STR
   - `echo STR`: display STR as a message
   - `set param_name param`: set parameter `param_name` to `param`. ex: `set tab_stop 4`
-  - `bind char command`: bind `Ctrl-(char)` to the command `command`. ex: `bind s save`, `bind h echo Hello world!"
+  - `bind char command`: bind `Ctrl-(char)` to the command `command`. ex: `bind s save`, `bind h echo Hello world!`
 
+
+# Customization / Contributing
+
+## Commands
+
+Commands are easy to create and allow for greater editor usability. To create your own command, create a julia file in the `cmds` folder and name it after your command. Then include your file in the Acorn module. Below is an example definition of the command `sample`. For more examples, see the `cmds/` folder.
+
+
+### `cmds/sample.jl`
+
+```julia
+
+# The command must have the signature
+#   function(::Editor, ::String)
+function sampleCommand(ed::Editor, args::String)
+    # Perform operation here
+end
+
+# Call `addCommand` to add
+addCommand(:sample,                         # The command name
+            sampleCommand,                  # The command function
+            help="description of sample")   # Displayed when user runs 'help sample'
+```
+
+### `Acorn.jl`
+
+Include your command here
+
+```julia
+# Load commands
+#...
+include("cmds/save.jl")
+include("cmds/find.jl")
+include("cmds/sample.jl") # Add this line
+#...
+```
+
+## Features
+
+Text selection, copy/paste, syntax highlighting, etc..
