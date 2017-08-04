@@ -24,7 +24,7 @@ include("cmds/echo.jl")
 function acorn(filename::String; rel::Bool=true)
     ed = Editor()
 
-    rel && (filename = abspath(filename))
+    #rel && (filename = abspath(filename))
 
     editorOpen(ed, filename)
 

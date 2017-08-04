@@ -68,19 +68,10 @@ end
 # FILE OPERATIONS #
 ###################
 
-function expand(filename::String)
-    # If the path is something like "~/Desktop/..." expand it
-    if length(filename) > 1 && filename[1] == '~'
-        filename = expanduser(filename)
-    end
-
-    return filename
-end
-
 """ Open a file and read the lines into the ed.rows array """
 function editorOpen(ed::Editor, filename::String)
     try
-        filename = expand(filename)
+        filename = expanduser(filename)
 
         # If no file exists, create it
         !isfile(filename) && open(filename, "w") do f end
