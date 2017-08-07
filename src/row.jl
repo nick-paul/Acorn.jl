@@ -2,17 +2,18 @@
 #    ROW    #
 #############
 
-""" Holds file true data and render data """
+"""Holds file true data and render data"""
 mutable struct Row
-    # file data, a row of text
+    "file data, a row of text"
     chars::String
-    # a row of text as rendered on screen
+
+    "a row of text as rendered on screen"
     render::String
 end
 
 Row(s::String) = Row(s, "")
 
-""" Update the `render` string using the `chars` string """
+"""Update the `render` string using the `chars` string"""
 function update!(row::Row)
     # Count the number of tabs
     tabs = 0
@@ -74,7 +75,7 @@ function charX(row::Row, rx::Int)
 end
 
 
-""" Insert a char into a string """
+"""Insert a char or string into a string"""
 function insert(s::String, i::Int, c::Union{Char,String})
     if s == ""
         string(c)
@@ -83,19 +84,19 @@ function insert(s::String, i::Int, c::Union{Char,String})
     end
 end
 
-""" Delete char from string """
+"""Delete char from string"""
 function delete(s::String, i::Int)
     i < 1 || i > length(s) && return s
     string(s[1:i-1], s[i+1:end])
 end
 
-""" Insert a char into the row at a given location """
+"""Insert a char into the row at a given location"""
 function insertChar!(row::Row, i::Int, c::Char)
     row.chars = insert(row.chars, i, c)
     update!(row)
 end
 
-""" Insert a tab into the row at a given location. Return the number of chars inserted """
+"""Insert a tab into the row at a given location. Return the number of chars inserted"""
 function insertTab!(row::Row, i::Int)
     num_chars = 1
     t = '\t'
@@ -114,7 +115,7 @@ function insertTab!(row::Row, i::Int)
 end
 
 
-""" Delete char from row """
+"""Delete char from row"""
 function deleteChar!(row::Row, i::Int)
     row.chars = delete(row.chars, i)
     update!(row)
@@ -135,10 +136,10 @@ end
 # ROWS #
 ########
 
-""" type alias for Array{Row, 1} """
+"""type alias for Array{Row, 1}"""
 Rows = Array{Row, 1}
 
-""" delete all rows from a Rows """
+"""delete all rows from a Rows"""
 function clearRows(rows::Rows)
     while length(rows) > 0
         pop!(rows)
@@ -146,7 +147,7 @@ function clearRows(rows::Rows)
 end
 
 
-""" Add a row to the end of the document """
+"""Add a row to the end of the document"""
 function appendRow(rows::Rows, s::String)
     row = Row(s)
     update!(row)
@@ -154,7 +155,7 @@ function appendRow(rows::Rows, s::String)
 end
 
 
-""" Convert all ROW data to a single string """
+"""Convert all ROW data to a single string"""
 function rowsToString(rows::Rows)
     join(map(row -> row.chars, rows), '\n')
 end

@@ -20,25 +20,49 @@ end
 ##########
 # EDITOR #
 ##########
-
+"Editor instance"
 mutable struct Editor
+    "row view offset"
     rowoff::Int
+   
+    "column view offset"
     coloff::Int
+
+    "terminal width"
     width::Int
+    
+    "terminal height"
     height::Int
+    
+    "currently edited file"
     filename::String
+    
+    "current status message"
     statusmsg::String
+    
+    "time reaining to display status"
     status_time::Float64
+
+    "true if the buffer has been edited"
     dirty::Bool
+
+    "if true, the key input loop will exit"
     quit::Bool
 
+    "the cursor position"
     csr::Cursor
+
+    "the test buffer"
     rows::Rows
+
+    "terminal hosting this editor"
     term::Base.Terminals.TTYTerminal
 
+    "used by commands to store variables"
     params::Dict{Symbol, Dict{Symbol, Any}}
 end
 
+"""create a new editor with default params"""
 function Editor()
     rowoff = 0
     coloff = 0
@@ -111,6 +135,7 @@ function editorOpen(ed::Editor)
     end
 end
 
+""" Save the buffer to the file using the current file name """
 function editorSave(ed::Editor)
     editorSave(ed, "")
 end
@@ -118,7 +143,7 @@ end
 """ Save the contents of the file buffer to disc """
 function editorSave(ed::Editor, path::String)
     prev_filename = ed.filename
-    
+
     try
         if path == ""
             if ed.filename == ""

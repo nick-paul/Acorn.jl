@@ -21,7 +21,7 @@ A pure julia text editor
 
 # Installing
 
-```
+```julia
 Pkg.clone("https://github.com/nick-paul/Acorn.jl.git")
 ```
 
@@ -30,7 +30,7 @@ Pkg.clone("https://github.com/nick-paul/Acorn.jl.git")
 From within the REPL:
 
 ```
-using Acorn
+julia> using Acorn
 julia> acorn("filename")
 ```
 
@@ -78,7 +78,27 @@ Commands are easy to create and allow for greater editor usability. To create yo
 #   function(::Editor, ::String)
 function sampleCommand(ed::Editor, args::String)
     # Perform operation here
+
+    # If you need to store state variables use ed.params
+    # ed.params[:YOUR CMD NAME][VAR NAME]
+    ed.params[:sample][:var_name] = some_val
+
+    # If you need to request input from the user:
+    editorPrompt(ed, "Enter your name: ",
+            callback=sampleCallback     # Callback fucntion: function(ed::Editor, buf::String, key::Char
+            buf="",             # Starting point for the input buffer. This text is
+                                #   'automatically' typed into the input when the
+                                #   prompt loads
+            showcursor=true)    # Move the cursor to the prompt
+
 end
+
+# Optional: If you request input from the user and need a
+#   callback function, use the following format:
+function sampleCallback(ed::Editor, buf::String, key::Char)
+    # Perform callback action here...
+end
+
 
 # Call `addCommand` to add
 addCommand(:sample,                         # The command name
@@ -101,4 +121,10 @@ include("cmds/sample.jl") # Add this line
 
 ## Features
 
-Text selection, copy/paste, syntax highlighting, etc..
+Text selection, copy/paste, syntax highlighting, etc. have not yet been implemented. I will try to keep up with issues and pull requests regarding features so feel free to add whatever you like to the editor.
+
+## Bug Fixes / Compatability
+
+Acorn has not been tested on OSX and currently has compatability issues with Windows. If you run into any problems on your platform feel free to patch it and send a pull request.
+
+If you experience any bugs, please submit an issue or patch it and send a pull request.
