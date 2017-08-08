@@ -28,7 +28,7 @@ function acorn(filename::String; rel::Bool=true)
 
     editorOpen(ed, filename)
 
-    setStatusMessage(ed, "HELP: Ctrl-P: command mode | Ctrl-Q: quit | Ctrl-S: save | Ctrl-F: find")
+    setStatusMessage(ed, "HELP: ctrl-p: command mode | ctrl-q: quit | ctrl-s: save")
 
     Base.Terminals.raw!(ed.term, true)
 

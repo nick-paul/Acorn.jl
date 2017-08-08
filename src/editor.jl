@@ -126,7 +126,7 @@ function editorOpen(ed::Editor)
     end
 
     filename = editorPrompt(ed, "Open file: ")
-    filename = expand(filename)
+    filename = expanduser(filename)
 
     if filename != ""
         editorOpen(ed, filename)
@@ -154,7 +154,7 @@ function editorSave(ed::Editor, path::String)
                 end
             end
         else
-            ed.filename = expand(path)
+            ed.filename = expanduser(path)
         end
 
         open(ed.filename, "w") do f
@@ -164,11 +164,11 @@ function editorSave(ed::Editor, path::String)
         ed.dirty = false
     catch Exception
         # There was an error saving, restore original filename
-        ed.filename = prev_filename
         setStatusMessage(ed, "Unable to save: $(ed.filename)")
+        ed.filename = prev_filename
     end
-end
 
+end
 
 
 ##########
@@ -276,7 +276,8 @@ function drawStatusBar(ed::Editor, buf::IOBuffer)
     col += 1
 
     # filename
-    filestatus = string(ed.filename, ed.dirty ? " *" : "")
+    filename = configGet(:status_fullpath) ? abspath(expanduser(ed.filename)) : splitdir(ed.filename)[2]
+    filestatus = string(filename, ed.dirty ? " *" : "")
 
     for i = 1:min(div(ed.width,2), length(filestatus))
         write(buf, filestatus[i])
@@ -494,7 +495,7 @@ end
 function editorQuit(ed::Editor; force::Bool=false)
     if !force && ed.dirty
         setStatusMessage(ed,
-            "File has unsaved changes. Save changes of use 'quit !' to quit anyway")
+            "File has unsaved changes. Save changes or use <ctrl-p>'quit !' to quit anyway.")
     else
         write(STDOUT, "\x1b[2J")
         write(STDOUT, "\x1b[H")
@@ -527,7 +528,7 @@ function runCommand(ed::Editor, command_str::String)
 
     # Command must be a valid identifier
     if !Base.isidentifier(cmd)
-        setStatusMessage(ed, "'$sym' is not a valid command name")
+        setStatusMessage(ed, "'$cmd' is not a valid command name")
         return
     end
 
@@ -544,7 +545,7 @@ function runCommand(ed::Editor, command_str::String)
         # join(args): convert Substring to String
         runCommand(COMMANDS[cmd_sym], ed, join(args))
     else
-        setStatusMessage(ed, "'$sym' is not a valid command")
+        setStatusMessage(ed, "'$cmd_sym' is not a valid command")
     end
 end
 
