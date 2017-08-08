@@ -1,7 +1,7 @@
 import Base.==
 
 @enum(Key,
-    BACKSPACE = 127,
+    BACKSPACE = (@static is_windows() ? 8 : 127),
     ARROW_LEFT = 1000,
     ARROW_RIGHT,
     ARROW_UP,
@@ -26,6 +26,16 @@ import Base.==
 ==(k::Key, c::Char) = UInt32(c) == UInt32(k)
 
 ctrl_key(c::Char)::UInt32 = UInt32(c) & 0x1f
+
+# For debugging
+function printNextKey()
+	term = Base.Terminals.TTYTerminal(get(ENV, "TERM", @static is_windows() ? "" : "dumb"), STDIN, STDOUT, STDERR)
+	Base.Terminals.raw!(term, true)
+	c = readNextChar()
+	print("Code: $(UInt32(c)), Char: $(Char(c))")
+	Base.Terminals.raw!(term, true)
+	return nothing
+end
 
 readNextChar() = Char(read(STDIN,1)[1])
 

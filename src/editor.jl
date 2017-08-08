@@ -314,6 +314,7 @@ function refreshScreen(ed::Editor)
 
     # Update terminal size
     ed.height = Base.Terminals.height(ed.term) - 2 # status + msg bar = 2
+	@static is_windows() ? (ed.height -= 1) : ed.height
     ed.width = Base.Terminals.width(ed.term)
 
     scroll(ed)
