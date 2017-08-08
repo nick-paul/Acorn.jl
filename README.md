@@ -62,6 +62,24 @@ Press `Ctrl-P` to enter command mode. Type 'help COMMAND' for more information o
   - `set param_name param`: set parameter `param_name` to `param`. ex: `set tab_stop 4`
   - `bind char command`: bind `Ctrl-(char)` to the command `command`. ex: `bind s save`, `bind h echo Hello world!`
 
+# Settings
+
+Change settings by pressing `ctrl-p` to enter command mode and then typing `set <cmd name> <value>`. All settings remain for the duration of the editor session. When opening a new editor, the default configuration is used. 
+
+To change the default values, use the following in your `.juliarc.jl`:
+
+```
+using Acorn
+Acorn.configSet(:param_name, value)
+```
+where `:param_name` is a symbol with the parameter's name and `value` is the new default value.
+
+Acorn currently supports the following settings:
+
+  - `tab_stop`: Tab width in number of spaces. (default: 4,)
+  - `expandtab`: If true, insert spaces when pressing the tab key.
+  - `status_fullpath`: If true, display the full path to the file in the status bar. If false, just display the name.
+
 
 # Customization / Contributing
 
@@ -121,10 +139,25 @@ include("cmds/sample.jl") # Add this line
 
 ## Features
 
-Text selection, copy/paste, syntax highlighting, etc. have not yet been implemented. I will try to keep up with issues and pull requests regarding features so feel free to add whatever you like to the editor.
+TODO: 
 
-## Bug Fixes / Compatability
+  - Text selection
+    - Copy/paste
+  - Tab completion
+  - Syntax highlighting
+  - Line numbers
+  - Auto indent
+  - ...
 
-Acorn has not been tested on OSX and currently has compatability issues with Windows. If you run into any problems on your platform feel free to patch it and send a pull request.
+Many features have not yet been implemented. I will try to keep up with issues and pull requests regarding features so feel free to add whatever you like to the editor.
+
+## Bug Fixes / Compatibility
+
+Acorn has not been tested on OSX and currently has compatibility issues with Windows. If you run into any problems on your platform feel free to patch it and send a pull request.
 
 If you experience any bugs, please submit an issue or patch it and send a pull request.
+
+# Credits
+
+  - Much of the core code and design in `src/editor.jl` is based off of [antirez](http://invece.org/)'s [kilo](http://antirez.com/news/108). 
+  - The [kilo tutorial](http://viewsourcecode.org/snaptoken/kilo/) by [snaptoken](https://github.com/snaptoken) was a huge help when writing the core editor features.
