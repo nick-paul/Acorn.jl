@@ -69,14 +69,22 @@ configIsParam(sym::Symbol) = sym in keys(CONFIG)
 
 const KEY_BINDINGS = Dict{UInt32, String}()
 
+"""Remove a keybinding"""
+function rmKeyBinding(c::Char)
+    delete!(KEY_BINDINGS, UInt32(c) & 0x1f)
+end
+
+"""Set a keybinding"""
 function setKeyBinding(c::Char, s::String)
     KEY_BINDINGS[UInt32(c) & 0x1f] = s
 end
 
-function getKeyBinding(c::Char)
+"""Get command from keybinding"""
+function getKeyBinding(c::Char) ::String
     get(KEY_BINDINGS, UInt32(c) & 0x1f, "")
 end
 
+"""Return true if the given key is bound to a command"""
 isKeyBound(c::Char) = (UInt32(c) & 0x1f) in keys(KEY_BINDINGS)
 
 
@@ -100,32 +108,12 @@ setKeyBinding('f', "find")
 setKeyBinding('q', "quit")
 
 
-# # In juliarc:
-# # using Acorn
-# 
-# 
-# ## KEY_BINDINGS
-# #Acorn.addKeyBinding('f', "find")
-# Acorn.addKeyBinding('o', "open")
-# Acorn.addKeyBinding('s', "save")
-# 
-# """
-# bind f find
-# bind o open
-# bind s save
-# set tab_stop 4
-# set expandtab true
-# """
-
-# TODO:
-# hard/soft tabs
-# show hidden characters
-
 export
     configGet,
     configSet,
     configIsParam,
     configDesc,
+    rmKeyBinding,
     setKeyBinding,
     getKeyBinding,
     isKeyBound
