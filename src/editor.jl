@@ -239,7 +239,7 @@ function scroll(ed::Editor)
 
     # Horizontal scrolling
     if ed.csr.rx < ed.coloff+1
-        ed.coloff = ed.csr.rx
+        ed.coloff = ed.csr.rx-1
     end
     if ed.csr.rx >= ed.coloff+1 + ed.width
         ed.coloff = ed.csr.rx - ed.width
@@ -394,7 +394,9 @@ end
 function processKeypress(ed::Editor)
     c = readKey();
 
-    if c == ctrl_key('p')
+    if c == UInt32('\x1b') # Esc
+        setStatusMessage(ed, "Press ctrl-q to quit")
+    elseif c == ctrl_key('p')
         runCommand(ed)
     elseif (c == ARROW_LEFT
             || c == ARROW_UP
@@ -420,13 +422,12 @@ function processKeypress(ed::Editor)
     elseif c == ctrl_key('l')
         # Refresh screen
         return
-    elseif c == UInt32('\x1b')
-        return
     elseif iscntrl(Char(c)) && isKeyBound(Char(c))
         runCommand(ed, getKeyBinding(Char(c)))
     elseif c == UInt32('\t')
         editorInsertTab(ed)
-    elseif !iscntrl(Char(c))
+    elseif !iscntrl(Char(c)) && c < 1000
+        # Chars above 1000 are a ::Key, see src/terminal.jl
         editorInsertChar(ed, c)
     end
 
