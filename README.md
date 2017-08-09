@@ -4,7 +4,7 @@
 
 `Acorn.jl` is a small text editor written purely in julia.
 
-**Note**: This projects was written to learn more about and demonstrate julia as a general purpose language. It was not originally intended to be a practical solution to editing text within the REPL (considering one can just type `;vim` for a feature complete text editor in the REPL).
+**Note**: This project was written to learn more about and demonstrate julia as a general purpose language, it was not originally intended to be a practical solution to editing text within the REPL (considering one can just type `;vim` for a feature complete text editor in the REPL).
 
 ![Basic Demo](http://npaul.co/files/Acorn_basic_demo.gif)
 
@@ -89,7 +89,7 @@ Acorn currently supports the following settings:
 
 ## Commands
 
-Commands are easy to create and allow for greater editor usability. To create your own command, create a julia file in the `cmds` folder and name it after your command. Then include your file in the Acorn module. Below is an example definition of the command `sample`. For more examples, see the `cmds/` folder. If you have written a command that you would like to see implemented in Acorn, feel free to send a pull request.
+Commands are easy to create and allow for greater editor usability. To create your own command, create a julia file in the `cmds` folder, name it after your command, and include it in the Acorn module. Below is an example definition of the command `sample`. For more examples, see the `cmds/` folder. If you have written a command that you would like to see implemented in Acorn, feel free to send a pull request.
 
 
 ### `cmds/sample.jl`

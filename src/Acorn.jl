@@ -52,6 +52,8 @@ function acorn()
     if length(ARGS) > 0
         filename = ARGS[1]
         acorn(filename, rel=false)
+    else
+        println("No filename detected.")
     end
 end
 
