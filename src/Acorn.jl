@@ -24,13 +24,12 @@ include("cmds/echo.jl")
 function acorn(filename::String; rel::Bool=true)
     ed = Editor()
 
-    #rel && (filename = abspath(filename))
-
     editorOpen(ed, filename)
 
     setStatusMessage(ed, "HELP: ctrl-p: command mode | ctrl-q: quit | ctrl-s: save")
 
     Base.Terminals.raw!(ed.term, true)
+
 
     try
         while !ed.quit
@@ -39,8 +38,9 @@ function acorn(filename::String; rel::Bool=true)
         end
     catch ex
         editorQuit(ed, force=true)
-        throw(ex)
+        rethrow(ex) # Don't reset stacktrace
     end
+
 
     Base.Terminals.raw!(ed.term, false)
 
