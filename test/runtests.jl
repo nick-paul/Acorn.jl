@@ -1,5 +1,11 @@
 using Acorn
 using Base.Test
 
-# write your own tests here
-@test 1 == 2
+# Tests for commands
+include("cmds/test_bind.jl")
+# TODO: include tests for all commands
+
+# TODO: Include additional tests
+# rows.jl
+# editor.jl
+# EditorCOnfig.jl
