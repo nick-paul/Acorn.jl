@@ -92,10 +92,20 @@ end
 # FILE OPERATIONS #
 ###################
 
+"""custom expand path function to ensure consistency"""
+function editorExpandPath(filename::String)
+    if filename == ""
+        return ""
+    else
+        return abspath(expanduser(filename))
+    end
+end
+
+
 """ Open a file and read the lines into the ed.rows array """
 function editorOpen(ed::Editor, filename::String)
     try
-        filename = expanduser(filename)
+        filename = editorExpandPath(filename)
 
         # If no file exists, create it
         !isfile(filename) && open(filename, "w") do f end
@@ -126,7 +136,7 @@ function editorOpen(ed::Editor)
     end
 
     filename = editorPrompt(ed, "Open file: ")
-    filename = expanduser(filename)
+    filename = editorExpandPath(filename)
 
     if filename != ""
         editorOpen(ed, filename)
@@ -154,7 +164,7 @@ function editorSave(ed::Editor, path::String)
                 end
             end
         else
-            ed.filename = expanduser(path)
+            ed.filename = editorExpandPath(path)
         end
 
         open(ed.filename, "w") do f
@@ -276,7 +286,7 @@ function drawStatusBar(ed::Editor, buf::IOBuffer)
     col += 1
 
     # filename
-    filename = configGet(:status_fullpath) ? abspath(expanduser(ed.filename)) : splitdir(ed.filename)[2]
+    filename = configGet(:status_fullpath) ? editorExpandPath(ed.filename) : splitdir(ed.filename)[2]
     filestatus = string(filename, ed.dirty ? " *" : "")
 
     for i = 1:min(div(ed.width,2), length(filestatus))
