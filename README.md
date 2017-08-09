@@ -1,22 +1,26 @@
 # Acorn.jl
 
-[![Build Status](https://travis-ci.org/nick-paul/Acorn.jl.svg?branch=master)](https://travis-ci.org/nick-paul/Acorn.jl)
+[![Build Status](https://travis-ci.org/nick-paul/Acorn.jl.svg?branch=master)](https://travis-ci.org/nick-paul/Acorn.jl) [![Build status](https://ci.appveyor.com/api/projects/status/tv53ynbt8lrwf6jd?svg=true)](https://ci.appveyor.com/project/nick-paul/acorn-jl)
 
-[![Coverage Status](https://coveralls.io/repos/nick-paul/Acorn.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/nick-paul/Acorn.jl?branch=master)
+`Acorn.jl` is a small text editor written purely in julia.
 
-[![codecov.io](http://codecov.io/github/nick-paul/Acorn.jl/coverage.svg?branch=master)](http://codecov.io/github/nick-paul/Acorn.jl?branch=master)
-
-A pure julia text editor
+**Note**: This projects was written to learn more about and demonstrate julia as a general purpose language. It was not originally intended to be a practical solution to editing text within the REPL (considering one can just type `;vim` for a feature complete text editor in the REPL).
 
 ![Basic Demo](http://npaul.co/files/Acorn_basic_demo.gif)
 
-# Features
+*Creating a new text file and writing contents from the julia REPL.*
 
-![Commands](http://npaul.co/files/Acorn_commands_demo.gif)
+Features include:
 
   - Use in REPL or from command line
   - Commands like `find`, `help`, `save` + easy to create your own.
   - Customizable key bindings and settings
+
+![Commands](http://npaul.co/files/Acorn_commands_demo.gif)
+
+*Acorn's command mode allows users to change settings and execute commands on the fly. It also provides a way to easily add, remove, or change keybindings from within the application*
+
+
 
 
 # Installing
@@ -57,10 +61,10 @@ Press `Ctrl-P` to enter command mode. Type 'help COMMAND' for more information o
   - `quit`: quit the editor
   - `open FILE`: open a file, create a new one if needed
   - `save [FILE]`: save the file, if a new filename is provided, save as that name
-  - `find [STR]`: start interactive find. if STR is provided, start interactive search with STR
-  - `echo STR`: display STR as a message
+  - `find [STR]`: start interactive find. if `STR` is provided, start interactive search with `STR`. Use the up and down arrows to go to the prev/next occurance in the test.
+  - `echo STR`: display `STR` as a message
   - `set param_name param`: set parameter `param_name` to `param`. ex: `set tab_stop 4`
-  - `bind char command`: bind `Ctrl-(char)` to the command `command`. ex: `bind s save`, `bind h echo Hello world!`
+  - `bind char command`: bind `Ctrl-(char)` to the command `command`. ex: `bind s save`, `bind h echo Hello world!`. Type `bind char ~` to unbind.
 
 # Settings
 
@@ -85,7 +89,7 @@ Acorn currently supports the following settings:
 
 ## Commands
 
-Commands are easy to create and allow for greater editor usability. To create your own command, create a julia file in the `cmds` folder and name it after your command. Then include your file in the Acorn module. Below is an example definition of the command `sample`. For more examples, see the `cmds/` folder.
+Commands are easy to create and allow for greater editor usability. To create your own command, create a julia file in the `cmds` folder and name it after your command. Then include your file in the Acorn module. Below is an example definition of the command `sample`. For more examples, see the `cmds/` folder. If you have written a command that you would like to see implemented in Acorn, feel free to send a pull request.
 
 
 ### `cmds/sample.jl`
@@ -103,7 +107,7 @@ function sampleCommand(ed::Editor, args::String)
 
     # If you need to request input from the user:
     editorPrompt(ed, "Enter your name: ",
-            callback=sampleCallback     # Callback fucntion: function(ed::Editor, buf::String, key::Char
+            callback=sampleCallback     # Callback function: function(ed::Editor, buf::String, key::Char
             buf="",             # Starting point for the input buffer. This text is
                                 #   'automatically' typed into the input when the
                                 #   prompt loads
@@ -124,9 +128,9 @@ addCommand(:sample,                         # The command name
             help="description of sample")   # Displayed when user runs 'help sample'
 ```
 
-### `Acorn.jl`
+### Including your command
 
-Include your command here
+Include your command in `Acorn.jl`
 
 ```julia
 # Load commands
@@ -137,9 +141,15 @@ include("cmds/sample.jl") # Add this line
 #...
 ```
 
+Please also create a test file `test/cmds/test_sample.jl` and include it in `test/runtests.jl`.
+
+```julia
+include("cmds/test_sample.jl")
+```
+
 ## Features
 
-TODO: 
+Many features have not yet been implemented. I will slowly be adding features and I will try to keep up with issues and pull requests so feel free to add whatever you like to the editor. Some things I may eventually add to the editor are:
 
   - Text selection
     - Copy/paste
@@ -148,8 +158,6 @@ TODO:
   - Line numbers
   - Auto indent
   - ...
-
-Many features have not yet been implemented. I will try to keep up with issues and pull requests regarding features so feel free to add whatever you like to the editor.
 
 ## Bug Fixes / Compatibility
 
