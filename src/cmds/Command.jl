@@ -1,4 +1,4 @@
-type Command
+struct Command
     name::Symbol
     help::String
     cmd::Function

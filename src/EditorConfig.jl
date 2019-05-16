@@ -5,9 +5,9 @@ module EditorConfig
 ## Parameter ##
 ###############
 
-type Parameter{T}
+struct Parameter{T}
     value::T
-    validate::Union{Function, Void}
+    validate::Union{Function, Nothing}
     desc::String # Used when calling help <param name>
 end
 

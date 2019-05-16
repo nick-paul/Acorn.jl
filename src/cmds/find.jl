@@ -45,7 +45,7 @@ function findCallback(ed::Editor, query::String, key::Char)
         end
 
         row = ed.rows[current]
-        loc = search(row.chars, query)
+        loc = findfirst(row.chars, query)
         if loc != 0:-1
             last_match = current
             ed.csr.y = current

@@ -22,7 +22,7 @@ function update!(row::Row)
     end
 
     # Allocate an array of characters
-    updated = Array{Char, 1}(length(row.chars) + tabs*(configGet(:tab_stop)-1))
+    updated = Array{Char, 1}(undef, length(row.chars) + tabs*(configGet(:tab_stop)-1))
 
     # copy the characters into the updated array
     idx = 1
