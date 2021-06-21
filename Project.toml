@@ -1,0 +1,5 @@
+name = "Acorn"
+uuid = "24b17f18-d112-58a5-8af6-134fb322093b"
+
+[compat]
+julia = "≥ 0.6.0"
